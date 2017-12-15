@@ -1,5 +1,7 @@
 require 'httpclient'
 
+require_dependency 'listener'
+
 class MattermostListener < Redmine::Hook::Listener
 	def redmine_mattermost_issues_new_after_save(context={})
 		issue = context[:issue]
@@ -167,7 +169,7 @@ class MattermostListener < Redmine::Hook::Listener
 
 private
 	def escape(msg)
-		msg.to_s.gsub(/^\*(\S*?)\*$/, '**\1**' ).gsub(/^-(\S*?)-$/, '~~\1~~').gsub(/<pre><code class=\"html\">(.*?)<\/code><\/pre>/m, '```\1```').gsub(/^h1.\s(.*?)$/, '# \1' ).gsub(/^h2.\s(.*?)$/, '## \1' ).gsub(/^h3.\s(.*?)$/, '### \1' ).gsub("&", "&amp;").gsub("<", "&lt;").gsub(">", "&gt;")
+		msg.to_s.redmine_to_mattermost().gsub("&", "&amp;").gsub("<", "&lt;").gsub(">", "&gt;")
 	end
 
 	def object_url(obj)
