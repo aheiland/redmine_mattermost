@@ -167,7 +167,7 @@ class MattermostListener < Redmine::Hook::Listener
 
 private
 	def escape(msg)
-		msg.to_s.gsub("&", "&amp;").gsub("<", "&lt;").gsub(">", "&gt;")
+		msg.to_s.gsub("&", "&amp;").gsub("<", "&lt;").gsub(">", "&gt;").gsub(/^\*(\S*?)\*$/, '**\1**' ).gsub(/^-(\S*?)-$/, '~~\1~~').gsub(/<pre><code class=\"html\">(.*?)<\/code><\/pre>/m, '```\1```').gsub(/^h1.\s(.*?)$/, '# \1' ).gsub(/^h2.\s(.*?)$/, '## \1' ).gsub(/^h3.\s(.*?)$/, '### \1' )
 	end
 
 	def object_url(obj)
